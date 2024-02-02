@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #87CEEB; /* Color de fondo del cielo */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .girasol {
+            width: 50px;
+            height: 50px;
+            background-image: url('girasol.png'); 
+            position: absolute;
+            animation: girasol-fall 5s linear infinite;
+            z-index: 1; 
+        }
+
+        @keyframes girasol-fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 1;
+            }
+        }
+
+        /* Estilos para el modal */
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 20px;
+            width: 80%;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            z-index: 2;
+            opacity: 0; 
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .txt-msg {
+            font-weight: bold;
+            color: rgb(172, 110, 230);
+        }
+
+        .next-button {
+            display: block;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #87CEEB;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+        }
+
+        .modal.show {
+            opacity: 1; 
+        }
+    </style>
+    <title>Lluvia de Girasoles</title>
+</head>
+<body>
+    <div class="modal" id="messageModal">
+        <p id="messageText" class="txt-msg">Mensaje aquí</p>
+        <div class="btn-container">
+            <button class="next-button" onclick="nextMessage()">Siguiente ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+            "Holaaaaa!!!.",
+            "Este es mi regalo para ti.",
+            "Se que en ocasiones, olvido las cosas, pero JAMASSSS!!, jamas te atrevas a pensar, que yo me olvido de ti",
+            "Se que con anasias querias tus flores amarillas, y creeme que ne verdad quisiera haber sido yo el que te las dió",
+            "Creeme, se que las mereces y es por eso que esta lluvia de floresitas amarillas, es solo para tí, una lluvia de floresitas amarillas tan especial, como lo eres tú ❤️.",
+            "Por que en un dia cualquiera, cualquiera (Cualquier New Yorkino mentiroso) podria ir a una floristeria y pedir las flores mas cuidadas que tengan y no por eso dejarian de ser un regalo especial pero ...",
+            "Dedicar mi tiempo, mis conocimientos y mi creatividad, mi sueño, para hacer algo unico para tí, es mi forma de decirte que es un regalo muy mio y sin menospreciar el noble de acto de dar flores, es la forma mas unica en las que quiero dartelas ❤️.",
+            "Tan única como lo eres tú!!! ❤️.",
+            "por que no se me olvido 😑.",
+            "29 de enero es de las fechas mas importanes para mi, aunque no me lo creas",
+            "Por que puedo asegurar, que la uso en mis claves, el numero con el que muchas veces corro mis carreras '291', repito, a mi no se me olvidó, en mi mente y corazón siempre estas presente, no se te ocurra pensar lo contrario.",
+            "Te podria asegurar que eres la única de 7 mil millones de personas, la única en el planeta ❤️.",
+            "Que va a recibir sus flores como la niña consentida que eres ❤️.",
+            "De esta forma tan unica y especial ❤️.",
+            "Unica y especial como tú ❤️.",
+            "Me hiciste sentir que para mi no valias y bueno, sabes que eso no es asi ❤️.",
+            "Por que si lo vales! y mucho ❤️.",
+            "Disfruta de tu lluvia de florecitas amarillas, por que aún habrá mas ❤️.",
+            "Por que esta muy lejos de pasar ❤️.",
+            "De que algun dia tu me dejes de importar ❤️.",
+            "Ningún New Yorkino mentiroso pendejo (sigo bravo)",
+            "Pero ten eso siempre presente, desde que respire, siempre me vas a importar ❤️.",
+            "Feliz Cumpleños ❤️.",
+            "Mi Gabi ❤️.",
+        ];
+
+        let currentIndex = 0;
+
+        function showNextMessage() {
+            const modal = document.getElementById("messageModal");
+            const messageText = document.getElementById("messageText");
+
+            if (currentIndex < messages.length) {
+                messageText.textContent = messages[currentIndex];
+                modal.classList.add("show"); // Muestra el modal con la clase "show"
+                currentIndex++;
+            } else {
+                modal.style.display = "none";
+            }
+        }
+
+        function nextMessage() {
+            const modal = document.getElementById("messageModal");
+            modal.classList.remove("show"); // Oculta el modal con la clase "show"
+            setTimeout(showNextMessage, 300); // Cambia el mensaje después de una breve transición (0.3 segundos)
+        }
+
+        function createGirasol() {
+            const girasol = document.createElement('div');
+            girasol.className = 'girasol';
+            girasol.innerHTML = `<img src="./sunflower.png" alt="">`
+            const x = Math.random() * window.innerWidth;
+            const delay = Math.random() * 1.5; // Ajusta el valor para variar la velocidad de caída
+            girasol.style.left = `${x}px`;
+            girasol.style.animationDuration = `${5 + delay}s`; // Ajusta la duración de la animación
+            document.body.appendChild(girasol);
+
+            girasol.addEventListener('animationiteration', () => {
+                // Elimina el girasol cuando cae al suelo
+                document.body.removeChild(girasol);
+                createGirasol(); // Crea otro girasol después de que caiga uno
+            });
+        }
+
+        for (let i = 0; i < 50; i++) {
+            setTimeout(createGirasol, Math.random() * 5000); // Agrega girasoles con un retraso aleatorio
+        }
+
+        showNextMessage(); // Mostrar el primer mensaje al cargar la página
+    </script>
+</body>
+</html>
